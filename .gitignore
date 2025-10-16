@@ -42,3 +42,22 @@ airflow.db
 # Temporary files
 *.tmp
 *.temp
+
+# Large data files (handled by LFS)
+# !parquet_data/*.parquet
+
+# Local database files
+*.db
+*.sqlite3
+
+# Environment files
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
