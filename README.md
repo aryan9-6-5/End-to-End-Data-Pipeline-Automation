@@ -1,6 +1,6 @@
-# 🏢 MassMutual Data Engineering Case Study: Enterprise Data Pipeline & Analytics Platform
+#  MassMutual Data Engineering Case Study: Enterprise Data Pipeline & Analytics Platform
 
-> **From Raw Data to Boardroom Insights** - A production-grade data pipeline processing 1.9M+ insurance records with automated ETL, self-healing data validation, and real-time business intelligence dashboard.
+> **From Raw Data to Boardroom Insights** - A production-grade data pipeline processing 1.25M+ insurance records with automated ETL, self-healing data validation, and real-time business intelligence dashboard.
 
 ![Pipeline Health](https://img.shields.io/badge/Pipeline-Healthy-brightgreen)
 ![Data Quality](https://img.shields.io/badge/Data_Quality-98%25-success)
@@ -9,24 +9,24 @@
 ![Airflow](https://img.shields.io/badge/Apache-Airflow-017CEE.svg)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-336791.svg)
 
-## 📖 Case Study Overview
+##  Case Study Overview
 
 **Client**: MassMutual Insurance Company  
 **Challenge**: Transform messy insurance data from multiple sources into clean, trustworthy analytics for business decision-making  
 **Solution**: End-to-end automated data pipeline with built-in data quality healing and executive dashboard  
 **Impact**: 98% data quality improvement, real-time business insights, reduced manual data processing by 90%
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 ```
 Source Data → Airflow ETL Pipeline → PostgreSQL Data Warehouse → Streamlit Dashboard
     ↓               ↓                       ↓                       ↓
 11 Parquet    Load → Validate →       11 Raw Tables +         Executive
 Files        Heal → Transform        2 Analytics Views      Business Intelligence
-(1.9M+ records)  (Automated DAGs)   (Data Warehouse)       (Real-time Metrics)
+(1.25M+ records)  (Automated DAGs)   (Data Warehouse)       (Real-time Metrics)
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Docker & Docker Compose
@@ -36,7 +36,7 @@ Files        Heal → Transform        2 Analytics Views      Business Intellige
 ### One-Command Deployment
 ```bash
 # Clone and setup (if from GitHub)
-git clone https://github.com/yourusername/massmutual-data-pipeline
+git clone https://github.com/aryan9-6-5/End-to-End-Data-Pipeline-Automation.git
 cd massmutual-data-pipeline
 
 # Run complete setup
@@ -44,9 +44,9 @@ python setup_project.py
 ```
 
 ### Access Applications
-- **📊 Airflow Orchestration**: http://localhost:8080 (admin/admin)
-- **📈 Executive Dashboard**: http://localhost:8501
-- **🗄️ PostgreSQL Database**: localhost:5433
+- ** Airflow Orchestration**: http://localhost:8080 (admin/admin)
+- ** Executive Dashboard**: http://localhost:8501
+- ** PostgreSQL Database**: localhost:5433
 
 ### Run Data Pipeline
 1. Access Airflow at http://localhost:8080
@@ -55,7 +55,7 @@ python setup_project.py
    - `heal_massmutual_data` (Data Quality)
    - `transform_massmutual` (Analytics)
 
-## 🎯 Business Impact
+##  Business Impact
 
 ### Data Quality Transformation
 | Metric | Before | After | Improvement |
@@ -71,27 +71,27 @@ python setup_project.py
 - **Customer Insights**: 50,000+ customer profiles with lifetime value analysis
 - **Revenue Tracking**: $15M+ premium revenue monitoring
 
-## 📊 Data Pipeline Features
+##  Data Pipeline Features
 
-### 🔄 Automated ETL Process
+###  Automated ETL Process
 - **Smart Data Ingestion**: 11 Parquet files → PostgreSQL warehouse
 - **Self-Healing Validation**: Automated data quality checks and corrections
 - **Business Rule Enforcement**: Insurance domain-specific validation
 - **Quarantine System**: Isolate and track invalid records
 
-### 📈 Advanced Analytics
+###  Advanced Analytics
 - **Policy Summary**: Customer-level policy aggregations and metrics
 - **Claims Trends**: Monthly claim analysis by type and severity
 - **Revenue Analytics**: Premium tracking and forecasting
 - **Customer Segmentation**: Policy holder behavior analysis
 
-### 🛡️ Data Quality Framework
+###  Data Quality Framework
 - **Duplicate Detection**: Identify and merge duplicate records
 - **Date Validation**: Policy period and claim date integrity
 - **Referential Integrity**: Cross-table relationship validation
 - **Business Logic**: Insurance-specific rule enforcement
 
-## 🏭 Production Architecture
+##  Production Architecture
 
 ### Technology Stack
 - **Orchestration**: Apache Airflow 2.4.2 (CeleryExecutor)
@@ -112,9 +112,9 @@ python setup_project.py
 - `policy_summary` - Customer-level policy analytics
 - `claims_trends` - Monthly claim performance metrics
 
-## 🎪 Portable Deployment System
+##  Portable Deployment System
 
-### 🌟 Ultimate Portability Features
+###  Ultimate Portability Features
 
 This project features a **complete portable deployment system** that works anywhere:
 
@@ -125,11 +125,11 @@ python setup_project.py
 ```
 
 This single command:
-- ✅ Starts all Docker services (Airflow, PostgreSQL, Redis, Streamlit)
-- ✅ Initializes databases and schemas
-- ✅ Sets up Airflow with admin credentials
-- ✅ Restores sample data and analytics
-- ✅ Provides access URLs and instructions
+-  Starts all Docker services (Airflow, PostgreSQL, Redis, Streamlit)
+-  Initializes databases and schemas
+-  Sets up Airflow with admin credentials
+-  Restores sample data and analytics
+-  Provides access URLs and instructions
 
 #### Self-Contained Architecture
 - **No External Dependencies**: Everything included in the project
@@ -143,7 +143,7 @@ This single command:
 - **Linux**: Production-ready deployment
 - **Cloud**: Easy migration to AWS/Azure/GCP
 
-### 📦 Portable Package Creation
+###  Portable Package Creation
 
 Create a complete portable package for sharing:
 
@@ -156,14 +156,14 @@ python make_portable.py
 ```
 
 #### What's Included in Portable Package:
-- 🐳 Complete Docker environment
-- 📊 All source code and DAGs
-- 💾 Database with sample analytics
-- 📈 Executive dashboard
-- 📚 Documentation and guides
-- 🔧 Setup and utility scripts
+-  Complete Docker environment
+-  All source code and DAGs
+-  Database with sample analytics
+-  Executive dashboard
+-  Documentation and guides
+-  Setup and utility scripts
 
-### 🚀 Deployment Scenarios
+###  Deployment Scenarios
 
 #### Scenario 1: Developer Laptop
 ```bash
@@ -189,7 +189,7 @@ python make_portable.py
 docker-compose -f docker-compose-portable.yaml up -d
 ```
 
-### 🔄 Database Portability
+###  Database Portability
 
 #### Automated Backup System
 ```bash
@@ -206,7 +206,7 @@ python restore_database.py
 - **Performance Ready**: Indexes and optimizations included
 - **Version Control**: Timestamped backups for rollbacks
 
-### 🛠️ Technical Portability Features
+###  Technical Portability Features
 
 #### No Hard-Coded Dependencies
 - **Network Configuration**: Internal Docker networking
@@ -220,7 +220,7 @@ python restore_database.py
 - **Network Minimal**: Local-only service communication
 - **Startup Optimized**: Parallel service initialization
 
-## 📈 Business Intelligence Dashboard
+##  Business Intelligence Dashboard
 
 ### Executive Overview
 - **Real-time KPI Monitoring**: Policies, Claims, Revenue
@@ -237,7 +237,7 @@ python restore_database.py
 - **Quarantine Management**: Invalid records tracking and resolution
 - **Pipeline Health**: ETL process monitoring and alerts
 
-## 🔧 Technical Implementation
+##  Technical Implementation
 
 ### Airflow DAGs
 - **load_massmutual_data**: Bulk data ingestion from Parquet
@@ -256,28 +256,28 @@ python restore_database.py
 - Efficient memory utilization
 - Automated index creation
 
-## 📁 Project Structure
+##  Project Structure
 ```
 massmutual-data-pipeline/
-├── 🐳 docker-compose-portable.yaml    # Complete environment setup
-├── 🔧 setup_project.py               # One-command deployment
-├️ 💾 backup_database.py              # Database backup utility
-├️ 🔄 restore_database.py             # Database restoration
-├️ 📦 make_portable.py                # Portable package creator
-├── 📊 dashboard.py                   # Streamlit executive dashboard
-├── 📁 dags/                          # Airflow data pipelines
+├──  docker-compose-portable.yaml    # Complete environment setup
+├──  setup_project.py               # One-command deployment
+├️  backup_database.py              # Database backup utility
+├️  restore_database.py             # Database restoration
+├️  make_portable.py                # Portable package creator
+├──  dashboard.py                   # Streamlit executive dashboard
+├──  dags/                          # Airflow data pipelines
 │   ├── load_massmutual_data.py       # Data ingestion
 │   ├── heal_massmutual_data.py       # Data quality healing
 │   ├── transform_massmutual.py       # Analytics transformation
-│   └── 📁 tasks/                     # Modular task definitions
-├── 📁 data/                          # Source Parquet files (11 tables)
-├── 📁 database_backup/               # Database dumps and backups
-├── 📄 requirements.txt               # Python dependencies
-├── 📄 QUICK_START.md                 # User guide
-└── 📄 README.md                      # This file
+│   └──  tasks/                     # Modular task definitions
+├──  data/                          # Source Parquet files (11 tables)
+├──  database_backup/               # Database dumps and backups
+├──  requirements.txt               # Python dependencies
+├──  QUICK_START.md                 # User guide
+└──  README.md                      # This file
 ```
 
-## 🎯 Key Achievements
+##  Key Achievements
 
 ### Technical Excellence
 - **99.8% Pipeline Reliability**: Automated error handling and recovery
@@ -294,7 +294,7 @@ massmutual-data-pipeline/
 - **Portable Deployment**: Works anywhere without configuration
 - **Executive Dashboard**: Business-friendly analytics interface
 
-## 🤝 Case Study Conclusion
+##  Case Study Conclusion
 
 This project demonstrates a **complete data engineering solution** that transformed MassMutual's data processing from manual, error-prone operations to an automated, reliable, and insightful analytics platform. The portable deployment system ensures that this solution can be easily demonstrated, shared, and deployed across any environment.
 
