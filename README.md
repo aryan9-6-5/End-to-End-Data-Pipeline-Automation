@@ -44,9 +44,9 @@ python setup_project.py
 ```
 
 ### Access Applications
-- ** Airflow Orchestration**: http://localhost:8080 (admin/admin)
-- ** Executive Dashboard**: http://localhost:8501
-- ** PostgreSQL Database**: localhost:5433
+- **Airflow Orchestration**: http://localhost:8080 (admin/admin)
+- **Executive Dashboard**: http://localhost:8501
+- **PostgreSQL Database**: localhost:5433
 
 ### Run Data Pipeline
 1. Access Airflow at http://localhost:8080
