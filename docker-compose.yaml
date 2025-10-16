@@ -1,0 +1,256 @@
+# version: '3.8'
+# services:
+#   materials-airflow-postgres:
+#     image: postgres:13
+#     environment:
+#       - POSTGRES_USER=airflow
+#       - POSTGRES_PASSWORD=airflow
+#       - POSTGRES_DB=airflow
+#     volumes:
+#       - materials_airflow-db-data:/var/lib/postgresql/data
+#     networks:
+#       - materials_airflow-network
+
+#   data-warehouse-postgres:
+#     container_name: materials-data-warehouse-postgres-1
+#     image: postgres:13
+#     environment:
+#       - POSTGRES_USER=massmutual_user
+#       - POSTGRES_PASSWORD=massmutual_pass
+#       - POSTGRES_DB=massmutual_warehouse
+#     volumes:
+#       - materials_warehouse-db-data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       - materials_airflow-network
+
+#   materials-redis:
+#     image: redis:latest
+#     networks:
+#       - materials_airflow-network
+
+#   airflow-webserver:
+#     image: custom-airflow:2.4.2
+#     depends_on:
+#       - materials-airflow-postgres
+#       - materials-redis
+#     environment:
+#       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+#       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+#       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+#       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+#     volumes:
+#       - C:/Users/Asus/materials/dags:/opt/airflow/dags
+#       - D:/massmutual/data:/opt/airflow/data
+#       - materials_airflow_logs:/opt/airflow/logs
+#     ports:
+#       - "8080:8080"
+#     command: webserver
+#     networks:
+#       - materials_airflow-network
+
+#   airflow-scheduler:
+#     image: custom-airflow:2.4.2
+#     depends_on:
+#       - materials-airflow-postgres
+#       - materials-redis
+#     environment:
+#       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+#       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+#       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM= 
+#       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+#     volumes:
+#       - C:/Users/Asus/materials/dags:/opt/airflow/dags
+#       - D:/massmutual/data:/opt/airflow/data
+#       - materials_airflow_logs:/opt/airflow/logs
+#     command: scheduler
+#     networks:
+#       - materials_airflow-network
+
+#   airflow-worker:
+#     image: custom-airflow:2.4.2
+#     depends_on:
+#       - materials-airflow-postgres
+#       - materials-redis
+#     environment:
+#       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+#       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+#       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+#       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+#     volumes:
+#       - C:/Users/Asus/materials/dags:/opt/airflow/dags
+#       - D:/massmutual/data:/opt/airflow/data
+#       - materials_airflow_logs:/opt/airflow/logs
+#     command: celery worker
+#     networks:
+#       - materials_airflow-network
+
+#   airflow-init:
+#     image: custom-airflow:2.4.2
+#     depends_on:
+#       - materials-airflow-postgres
+#       - materials-redis
+#     environment:
+#       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+#       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+#       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+#       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+#       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+#     volumes:
+#       - C:/Users/Asus/materials/dags:/opt/airflow/dags
+#     command: >
+#       bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin"
+#     networks:
+#       - materials_airflow-network
+
+# volumes:
+#   materials_airflow-db-data:
+#   materials_warehouse-db-data:
+#   materials_airflow_logs:
+
+# networks:
+#   materials_airflow-network:
+#     driver: bridge
+
+version: '3.8'
+services:
+  materials-airflow-postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    volumes:
+      - materials_airflow-db-data:/var/lib/postgresql/data
+    networks:
+      - materials_airflow-network
+
+  data-warehouse-postgres:
+    container_name: materials-data-warehouse-postgres-1
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=massmutual_user
+      - POSTGRES_PASSWORD=massmutual_pass
+      - POSTGRES_DB=massmutual_warehouse
+    volumes:
+      - materials_warehouse-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - materials_airflow-network
+
+  materials-redis:
+    image: redis:latest
+    networks:
+      - materials_airflow-network
+
+  airflow-webserver:
+    image: custom-airflow:2.4.2
+    depends_on:
+      - materials-airflow-postgres
+      - materials-redis
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - C:/Users/Asus/materials/dags:/opt/airflow/dags
+      - D:/massmutual/data:/opt/airflow/data
+      - materials_airflow_logs:/opt/airflow/logs
+    ports:
+      - "8080:8080"
+    command: webserver
+    networks:
+      - materials_airflow-network
+
+  airflow-scheduler:
+    image: custom-airflow:2.4.2
+    depends_on:
+      - materials-airflow-postgres
+      - materials-redis
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM= 
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - C:/Users/Asus/materials/dags:/opt/airflow/dags
+      - D:/massmutual/data:/opt/airflow/data
+      - materials_airflow_logs:/opt/airflow/logs
+    command: scheduler
+    networks:
+      - materials_airflow-network
+
+  airflow-worker:
+    image: custom-airflow:2.4.2
+    depends_on:
+      - materials-airflow-postgres
+      - materials-redis
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - C:/Users/Asus/materials/dags:/opt/airflow/dags
+      - D:/massmutual/data:/opt/airflow/data
+      - materials_airflow_logs:/opt/airflow/logs
+    command: celery worker
+    networks:
+      - materials_airflow-network
+
+  airflow-init:
+    image: custom-airflow:2.4.2
+    depends_on:
+      - materials-airflow-postgres
+      - materials-redis
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://materials-redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - C:/Users/Asus/materials/dags:/opt/airflow/dags
+    command: >
+      bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin"
+    networks:
+      - materials_airflow-network
+    # streamlit:
+    #   image: python:3.9-slim
+    #   container_name: streamlit_dashboard
+    #   volumes:
+    #     - .:/app
+    #   working_dir: /app
+    #   ports:
+    #     - "8501:8501"
+    #   depends_on:
+    #     - data-warehouse-postgres
+    #   command: >
+    #     sh -c "pip install streamlit psycopg2 pandas && streamlit run dashboard.py"
+
+
+volumes:
+  materials_airflow-db-data:
+  materials_warehouse-db-data:
+  materials_airflow_logs:
+
+networks:
+  materials_airflow-network:
+    driver: bridge

@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Airflow
+airflow.cfg
+airflow.db
+
+# Streamlit
+.streamlit/
+
+# Large data files (except our Parquet files for demo)
+# !data/*.parquet
+
+# Temporary files
+*.tmp
+*.temp

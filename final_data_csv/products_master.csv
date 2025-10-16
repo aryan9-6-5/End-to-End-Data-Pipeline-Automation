@@ -1,0 +1,55 @@
+product_id,product_name,category,subcategory,base_price,is_veg,restaurant_id
+PROD_SD_754,Chocolate Truffle Cake,CAKE,PREMIUM,500,TRUE,sweet-delights-001
+PROD_SD_214,Chocolate Truffle Cake,CAKE,PREMIUM,500,TRUE,sweet-delights-002
+PROD_SD_125,Black Forest Cake,CAKE,PREMIUM,550,TRUE,sweet-delights-001
+PROD_SD_859,Black Forest Cake,CAKE,PREMIUM,550,TRUE,sweet-delights-002
+PROD_SD_381,Strawberry Cheesecake,CAKE,PREMIUM,600,TRUE,sweet-delights-001
+PROD_SD_350,Strawberry Cheesecake,CAKE,PREMIUM,600,TRUE,sweet-delights-002
+PROD_SD_328,Red Velvet Cake,CAKE,PREMIUM,650,TRUE,sweet-delights-001
+PROD_SD_242,Red Velvet Cake,CAKE,PREMIUM,650,TRUE,sweet-delights-002
+PROD_SD_854,Chocolate Chip Cookies,BAKERY,COOKIES,120,TRUE,sweet-delights-001
+PROD_SD_204,Chocolate Chip Cookies,BAKERY,COOKIES,120,TRUE,sweet-delights-002
+PROD_SD_792,Butter Croissant,BAKERY,PASTRY,80,TRUE,sweet-delights-001
+PROD_SD_858,Butter Croissant,BAKERY,PASTRY,80,TRUE,sweet-delights-002
+PROD_SD_658,Blueberry Muffin,BAKERY,MUFFIN,90,TRUE,sweet-delights-001
+PROD_SD_189,Blueberry Muffin,BAKERY,MUFFIN,90,TRUE,sweet-delights-002
+PROD_SD_704,Cinnamon Roll,BAKERY,PASTRY,100,TRUE,sweet-delights-001
+PROD_SD_532,Cinnamon Roll,BAKERY,PASTRY,100,TRUE,sweet-delights-002
+PROD_SD_132,Garlic Bread,BAKERY,BREAD,150,TRUE,sweet-delights-001
+PROD_SD_130,Garlic Bread,BAKERY,BREAD,150,TRUE,sweet-delights-002
+PROD_CC_223,Margherita Pizza,PIZZA,CLASSIC,320,TRUE,crust-crumble-001
+PROD_CC_255,Pepperoni Pizza,PIZZA,PREMIUM,480,FALSE,crust-crumble-001
+PROD_CC_259,Veggie Supreme,PIZZA,PREMIUM,450,TRUE,crust-crumble-001
+PROD_CC_329,BBQ Chicken Pizza,PIZZA,PREMIUM,520,FALSE,crust-crumble-001
+PROD_CC_354,Hawaiian Pizza,PIZZA,CLASSIC,420,FALSE,crust-crumble-001
+PROD_CC_206,Paneer Tikka Pizza,PIZZA,SPECIAL,480,TRUE,crust-crumble-001
+PROD_CC_343,Cheese Burst Pizza,PIZZA,PREMIUM,550,TRUE,crust-crumble-001
+PROD_CC_250,Garlic Bread Sticks,SIDES,BREAD,120,TRUE,crust-crumble-001
+PROD_BB_583,Cappuccino,BEVERAGE,COFFEE,120,TRUE,bean-brew-001
+PROD_BB_566,Latte,BEVERAGE,COFFEE,130,TRUE,bean-brew-001
+PROD_BB_579,Espresso,BEVERAGE,COFFEE,80,TRUE,bean-brew-001
+PROD_BB_539,Cold Brew,BEVERAGE,COFFEE,150,TRUE,bean-brew-001
+PROD_BB_507,Iced Tea,BEVERAGE,TEA,90,TRUE,bean-brew-001
+PROD_BB_456,Blueberry Muffin,BAKERY,MUFFIN,80,TRUE,bean-brew-001
+PROD_BB_514,Chocolate Brownie,BAKERY,DESSERT,110,TRUE,bean-brew-001
+PROD_BB_550,Club Sandwich,FOOD,SANDWICH,250,FALSE,bean-brew-001
+PROD_BB_471,Veggie Wrap,FOOD,WRAP,220,TRUE,bean-brew-001
+PROD_BG_601,Classic Burger Combo,COMBO,MEAL,320,FALSE,burger-blvd-001
+PROD_BG_794,Chicken Burger,MAIN,BURGER,250,FALSE,burger-blvd-001
+PROD_BG_640,Veggie Burger,MAIN,BURGER,220,TRUE,burger-blvd-001
+PROD_BG_778,Fries,SIDES,SIDES,80,TRUE,burger-blvd-001
+PROD_BG_708,Chicken Wings,SIDES,CHICKEN,200,FALSE,burger-blvd-001
+PROD_BG_687,Coca Cola,BEVERAGE,SODA,50,TRUE,burger-blvd-001
+PROD_NN_771,Hakka Noodles,NOODLES,ASIAN,250,TRUE,noodle-nation-001
+PROD_NN_739,Schezwan Noodles,NOODLES,ASIAN,280,TRUE,noodle-nation-001
+PROD_NN_755,Chicken Fried Rice,RICE,ASIAN,300,FALSE,noodle-nation-001
+PROD_NN_895,Veg Fried Rice,RICE,ASIAN,250,TRUE,noodle-nation-001
+PROD_NN_786,Spring Rolls,APPETIZER,ASIAN,180,TRUE,noodle-nation-001
+PROD_NN_726,Manchurian,APPETIZER,ASIAN,220,TRUE,noodle-nation-001
+PROD_GS_823,Grilled Salmon,MAIN_COURSE,SEAFOOD,1800,FALSE,golden-spoon-001
+PROD_GS_897,Lamb Chops,MAIN_COURSE,MEAT,2200,FALSE,golden-spoon-001
+PROD_GS_824,Truffle Risotto,MAIN_COURSE,ITALIAN,1200,TRUE,golden-spoon-001
+PROD_GS_891,Lobster Thermidor,MAIN_COURSE,SEAFOOD,3500,FALSE,golden-spoon-001
+PROD_GS_888,Caesar Salad,APPETIZER,SALAD,600,FALSE,golden-spoon-001
+PROD_GS_954,Red Wine,BEVERAGE,WINE,2500,TRUE,golden-spoon-001
+PROD_GS_867,Tiramisu,DESSERT,ITALIAN,800,TRUE,golden-spoon-001
