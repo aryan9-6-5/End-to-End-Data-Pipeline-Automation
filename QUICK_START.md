@@ -1,54 +1,57 @@
-# 🚀 Quick Start Guide
+# 🚀 Quick Start Guide (100% Dockerized)
 
-## For New Users (One-Command Setup)
+Everything runs inside Docker containers — **no manual Python packages or local database configuration needed**.
 
-1. **Extract the ZIP file**
-2. **Open terminal in extracted folder**
-3. **Run setup script:**
-   ```bash
-   python setup_project.py
-Wait for completion (~2-3 minutes)
+---
 
-Access applications:
-
-Airflow: http://localhost:8080 (admin/admin)
-
-Dashboard: http://localhost:8501
-
-Manual Setup (if needed)
-bash
-# 1. Start services
-docker-compose up -d
-
-# 2. Wait for services to be ready
-python restore_database.py
-
-# 3. Start dashboard
-streamlit run dashboard.py
-Running the Pipeline
-Go to Airflow: http://localhost:8080
-
-Run DAGs in this order:
-
-load_massmutual_data
-
-heal_massmutual_data
-
-transform_massmutual
-
-View results in Dashboard: http://localhost:8501
-
-text
-
-### **Step 6: Execute This Process Now**
+## 1️⃣ Start All Services (Airflow, Postgres & Streamlit)
 
 ```bash
-# 1. Backup your current database
-python backup_database.py
+docker-compose up -d --build
+```
 
-# 2. Create the portable package
-python make_portable.py
+This launches all services in isolated containers:
+- 🐘 **Data Warehouse PostgreSQL**: Port `5433` (internal `5432`)
+- 🌪️ **Airflow Webserver, Scheduler, Worker & DB**: Port `8080`
+- 📊 **Streamlit Executive Dashboard**: Port `8501`
+- ⚡ **Redis**: Internal queue
 
-# 3. Check the created zip file
-dir *.zip
+---
+
+## 2️⃣ Run the Data Pipeline (Load ➔ Heal ➔ Transform)
+
+### Method A: Via Airflow Web UI (Recommended)
+1. Open **[http://localhost:8080](http://localhost:8080)** (login: `admin` / `admin`).
+2. Unpause and trigger **`master_massmutual_pipeline`**.
+   - It will automatically execute in exact sequence:
+     1. `load_massmutual_data` (Ingests Parquet files into Postgres)
+     2. `heal_massmutual_data` (Cleans corrupt data & quarantines invalid records)
+     3. `transform_massmutual_manual` (Generates business & policy aggregations)
+
+### Method B: One-Command Trigger from Terminal (via Docker)
+```bash
+docker exec -it materials-airflow-webserver-1 airflow dags trigger master_massmutual_pipeline
+```
+
+---
+
+## 3️⃣ View the Executive Dashboard
+Open **[http://localhost:8501](http://localhost:8501)** to explore:
+- 🏠 **Executive Summary**: Core insurance KPIs, premiums, and active policies.
+- 📈 **Business Intelligence**: Claims trends over time & policy distribution.
+- 🔍 **Data Quality**: Healing metrics (Cleaned vs. Quarantined records).
+- 📋 **Data Explorer**: Live queries into raw, cleaned, and transformed tables.
+- 🤖 **AI Assistant**: Natural language queries powered by Gemini AI.
+
+---
+
+## 🛠️ Useful Docker Commands
+
+```bash
+# View live container logs
+docker-compose logs -f streamlit
+docker-compose logs -f airflow-webserver
+
+# Restart all services
+docker-compose down && docker-compose up -d --build
 ```

@@ -1,5 +1,5 @@
 -- Create schema
--- CREATE SCHEMA IF NOT EXISTS transformed;
+CREATE SCHEMA IF NOT EXISTS transformed;
 
 -- Policy summary
 DROP TABLE IF EXISTS transformed.policy_summary;

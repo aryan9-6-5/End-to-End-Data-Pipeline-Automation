@@ -1,7 +1,13 @@
 # restore_database.py
 import subprocess
 import os
+import sys
 import glob
+
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if sys.stderr and hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 def restore_database():
     print("🚀 Restoring database...")
@@ -19,14 +25,14 @@ def restore_database():
         # Wait for PostgreSQL to be ready
         print("⏳ Waiting for PostgreSQL to be ready...")
         subprocess.run([
-            'docker', 'exec', 'postgres',
+            'docker', 'exec', 'materials-data-warehouse-postgres-1',
             'pg_isready', '-U', 'massmutual_user', '-h', 'localhost', '-p', '5432'
         ], check=True)
         
         # Restore the database
         with open(latest_backup, 'r') as f:
             cmd = [
-                'docker', 'exec', '-i', 'postgres',
+                'docker', 'exec', '-i', 'materials-data-warehouse-postgres-1',
                 'psql', '-U', 'massmutual_user', '-d', 'massmutual_warehouse'
             ]
             

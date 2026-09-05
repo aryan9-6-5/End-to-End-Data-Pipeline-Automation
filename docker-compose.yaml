@@ -164,9 +164,10 @@ services:
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
     volumes:
-      - C:/Users/Asus/materials/dags:/opt/airflow/dags
-      - D:/massmutual/data:/opt/airflow/data
+      - ./dags:/opt/airflow/dags
+      - ./parquet_data:/opt/airflow/data
       - materials_airflow_logs:/opt/airflow/logs
     ports:
       - "8080:8080"
@@ -186,9 +187,10 @@ services:
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM= 
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
     volumes:
-      - C:/Users/Asus/materials/dags:/opt/airflow/dags
-      - D:/massmutual/data:/opt/airflow/data
+      - ./dags:/opt/airflow/dags
+      - ./parquet_data:/opt/airflow/data
       - materials_airflow_logs:/opt/airflow/logs
     command: scheduler
     networks:
@@ -206,9 +208,10 @@ services:
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
     volumes:
-      - C:/Users/Asus/materials/dags:/opt/airflow/dags
-      - D:/massmutual/data:/opt/airflow/data
+      - ./dags:/opt/airflow/dags
+      - ./parquet_data:/opt/airflow/data
       - materials_airflow_logs:/opt/airflow/logs
     command: celery worker
     networks:
@@ -226,24 +229,33 @@ services:
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@materials-airflow-postgres:5432/airflow
       - AIRFLOW__CORE__FERNET_KEY=mYogSr1uF3S64vV2ZbpVQUkkS37_-OKuzWFEoh1MYPM=
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
     volumes:
-      - C:/Users/Asus/materials/dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
     command: >
       bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin"
     networks:
       - materials_airflow-network
-    # streamlit:
-    #   image: python:3.9-slim
-    #   container_name: streamlit_dashboard
-    #   volumes:
-    #     - .:/app
-    #   working_dir: /app
-    #   ports:
-    #     - "8501:8501"
-    #   depends_on:
-    #     - data-warehouse-postgres
-    #   command: >
-    #     sh -c "pip install streamlit psycopg2 pandas && streamlit run dashboard.py"
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: materials-streamlit-dashboard-1
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=data-warehouse-postgres
+      - DB_PORT=5432
+      - DB_NAME=massmutual_warehouse
+      - DB_USER=massmutual_user
+      - DB_PASSWORD=massmutual_pass
+    ports:
+      - "8501:8501"
+    depends_on:
+      - data-warehouse-postgres
+    networks:
+      - materials_airflow-network
 
 
 volumes:

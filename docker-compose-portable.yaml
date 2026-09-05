@@ -45,7 +45,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./data:/opt/airflow/data
+      - ./parquet_data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
     ports:
       - "8080:8080"
@@ -67,7 +67,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./data:/opt/airflow/data
+      - ./parquet_data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
     command: scheduler
     networks:
@@ -87,7 +87,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./data:/opt/airflow/data
+      - ./parquet_data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
     command: celery worker
     networks:

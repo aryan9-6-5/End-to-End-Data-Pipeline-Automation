@@ -182,39 +182,64 @@ st.set_page_config(
 # </style>
 # """, unsafe_allow_html=True)
 
-# Database Connection
-@st.cache_resource
+# Database Connection (non-cached to prevent stale socket reuse)
 def get_connection():
-    try:
-        return psycopg2.connect(
-            dbname="massmutual_warehouse",
-            user="massmutual_user",
-            password="massmutual_pass",
-            host="127.0.0.1",
-            port=5433
-        )
-    except Exception as e:
-        st.error(f"Database connection failed: {e}")
-        return None
+    db_name = os.getenv("DB_NAME", "massmutual_warehouse")
+    db_user = os.getenv("DB_USER", "massmutual_user")
+    db_pass = os.getenv("DB_PASSWORD", "massmutual_pass")
+    
+    # Try containerized network host first, then localhost fallback
+    candidate_configs = [
+        (os.getenv("DB_HOST", "data-warehouse-postgres"), int(os.getenv("DB_PORT", 5432))),
+        ("127.0.0.1", 5433),
+        ("127.0.0.1", 5432),
+        ("localhost", 5432)
+    ]
+    
+    for host, port in candidate_configs:
+        try:
+            return psycopg2.connect(
+                dbname=db_name,
+                user=db_user,
+                password=db_pass,
+                host=host,
+                port=port,
+                connect_timeout=3
+            )
+        except Exception:
+            continue
+            
+    return None
 
 # Load Data with Caching
 @st.cache_data(ttl=300)
 def load_data(query):
-    conn = get_connection()
-    if conn:
-        try:
+    conn = None
+    try:
+        conn = get_connection()
+        if conn:
             df = pd.read_sql_query(query, conn)
             return df
-        except Exception as e:
-            st.error(f"Query failed: {e}")
+        else:
+            st.warning("⚠️ Database connection currently unavailable. Please verify Docker services are running.")
             return pd.DataFrame()
-    return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Query failed: {e}")
+        return pd.DataFrame()
+    finally:
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
 # Load data globally for chatbot context
 policy_summary = load_data("SELECT * FROM transformed.policy_summary LIMIT 50000")
 claims_trends = load_data("SELECT claim_month, claim_count, claim_type FROM transformed.claims_trends LIMIT 1000")
 total_claims = claims_trends['claim_count'].sum() if not claims_trends.empty and 'claim_count' in claims_trends.columns else 0
 # Sidebar Navigation
-st.sidebar.image(r"C:\Users\Asus\materials\1.jpg", width=200)
+logo_path = os.path.join(os.path.dirname(__file__), "1.jpg")
+if os.path.exists(logo_path):
+    st.sidebar.image(logo_path, width=200)
 st.sidebar.title("📊 Navigation")
 page = st.sidebar.selectbox(
     "Select Dashboard View",
@@ -226,9 +251,9 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🔧 Global Filters")
 date_range = st.sidebar.date_input(
     "Select Date Range",
-    [datetime(2025, 1, 1), datetime(2025, 12, 31)],
-    min_value=datetime(2020, 1, 1),
-    max_value=datetime(2025, 12, 31)
+    [datetime(2015, 1, 1), datetime(2026, 12, 31)],
+    min_value=datetime(2015, 1, 1),
+    max_value=datetime(2030, 12, 31)
 )
 if len(date_range) == 2:
     start_date, end_date = date_range
@@ -465,9 +490,8 @@ elif page == "📈 Business Intelligence":
     claims_query = "SELECT claim_month, claim_count, claim_type FROM transformed.claims_trends"
     if start_date and end_date:
         claims_query += f" WHERE claim_month BETWEEN '{start_date}' AND '{end_date}'"
+    claims_query += " ORDER BY claim_month ASC"
     claims_trends = load_data(claims_query)
-    if not claims_trends.empty:
-        st.write("Debug: claims_trends columns:", claims_trends.columns.tolist())  # NEW: Debug output
     
     # Claims Analysis
     st.markdown("### 📋 Claims Trend Analysis")
@@ -939,25 +963,36 @@ elif page == "⚙️ Pipeline Overview":
     
     # NEW: Airflow DAG Status
     st.markdown("### 📡 Airflow Pipeline Status")
-    try:
-        response = requests.get(
-                "http://localhost:8080/api/v1/dags/transform_massmutual_manual/dagRuns",
-                auth=('admin', 'admin'),  # Confirmed working credentials
-                timeout=5  # Added to avoid hanging
-            )
-        if response.status_code == 200:
-            dag_runs = response.json()['dag_runs']
-            latest_run = dag_runs[0] if dag_runs else None
-            if latest_run:
-                status = latest_run['state']
-                status_color = "status-green" if status == "success" else "status-red" if status == "failed" else "status-yellow"
-                st.markdown(f"**Latest DAG Run:** <span class='{status_color}'>{status}</span> at {latest_run['execution_date']}", unsafe_allow_html=True)
-            else:
-                st.warning("No DAG runs found.")
-        else:
-            st.error(f"Airflow API failed: {response.status_code}")
-    except Exception as e:
-        st.info(f"Airflow API error: {e}. Check http://localhost:8080")
+    airflow_base_url = os.getenv("AIRFLOW_BASE_URL", "http://localhost:8080")
+    # In docker network, try airflow-webserver as well
+    candidate_urls = [airflow_base_url, "http://airflow-webserver:8080", "http://127.0.0.1:8080"]
+    dag_ids = ["master_massmutual_pipeline", "transform_massmutual_manual", "heal_massmutual_data", "load_massmutual_data"]
+    
+    found_run = False
+    for base_url in candidate_urls:
+        if found_run:
+            break
+        for dag_id in dag_ids:
+            try:
+                response = requests.get(
+                    f"{base_url}/api/v1/dags/{dag_id}/dagRuns",
+                    auth=('admin', 'admin'),
+                    timeout=3
+                )
+                if response.status_code == 200:
+                    dag_runs = response.json().get('dag_runs', [])
+                    if dag_runs:
+                        latest_run = dag_runs[0]
+                        status = latest_run.get('state', 'unknown')
+                        status_color = "status-green" if status == "success" else "status-red" if status == "failed" else "status-yellow"
+                        st.markdown(f"**DAG:** `{dag_id}` | **Latest State:** <span class='{status_color}'>{status.upper()}</span> | **Run Date:** {latest_run.get('execution_date', 'N/A')}", unsafe_allow_html=True)
+                        found_run = True
+                        break
+            except Exception:
+                continue
+                
+    if not found_run:
+        st.info("ℹ️ Airflow is running. View and trigger live DAGs at **[http://localhost:8080](http://localhost:8080)** (login: `admin` / `admin`).")
     st.markdown("---")
     
     # Pipeline Phases

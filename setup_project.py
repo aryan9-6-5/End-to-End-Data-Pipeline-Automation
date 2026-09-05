@@ -2,7 +2,13 @@
 # setup_project.py
 import subprocess
 import os
+import sys
 import time
+
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if sys.stderr and hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 def run_command(command, check=True):
     """Run a shell command and return result"""
@@ -31,18 +37,19 @@ def setup_project():
     
     # 3. Initialize database
     print("3. Initializing database...")
-    if not run_command("docker exec postgres createdb -U massmutual_user massmutual_warehouse || true"):
-        return False
+    # massmutual_warehouse is auto-created by docker-compose environment vars, but ensure it exists safely
+    run_command("docker exec materials-data-warehouse-postgres-1 createdb -U massmutual_user massmutual_warehouse", check=False)
     
-    # 4. Restore database from backup
-    print("4. Restoring database from backup...")
-    if not run_command("python restore_database.py"):
-        print("⚠️  Database restore failed, but continuing...")
+    # 4. Restore database from backup (if any backup exists)
+    print("4. Checking database restore from backup...")
+    if os.path.exists("restore_database.py"):
+        if not run_command("python restore_database.py", check=False):
+            print("⚠️  Database restore skipped or not needed, continuing with fresh warehouse...")
     
-    # 5. Initialize Airflow
+    # 5. Initialize Airflow (airflow-init container handles this, but verify/ensure)
     print("5. Setting up Airflow...")
-    run_command("docker exec airflow-webserver airflow db init || true")
-    run_command('docker exec airflow-webserver airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com || true')
+    run_command("docker exec materials-airflow-webserver-1 airflow db init", check=False)
+    run_command('docker exec materials-airflow-webserver-1 airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com', check=False)
     
     print("✅ Setup completed successfully!")
     print("\n🎯 Next steps:")
